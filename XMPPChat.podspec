@@ -19,7 +19,7 @@ s.license      = "MIT"
 s.author             = { "Linganna" => "linganna.allula@gmail.com" }
 s.platform     = :ios, "10.0"
 s.source       = { :git => 'https://github.com/Linganna/XMPPChat.git', :tag => 'v0.0.1' }
-s.source_files  = "XMPPChat", "XMPPChat/**/*.{h,m,swift}", "XMPPChat/**/*.{xcdatamodel,xcdatamodeld}"
+s.source_files  = "XMPPChat", "XMPPChat/**/*.{h,m,swift,xcdatamodel,xcdatamodeld}"
 s.dependency "XMPPFramework", "~> 3.7.0"
 
 
