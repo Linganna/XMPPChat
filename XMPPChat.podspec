@@ -20,6 +20,7 @@ s.author             = { "Linganna" => "linganna.allula@gmail.com" }
 s.platform     = :ios, "10.0"
 s.source       = { :git => 'https://github.com/Linganna/XMPPChat.git', :tag => 'v0.0.1' }
 s.source_files  = "XMPPChat", "XMPPChat/**/*.{h,m,swift,xcdatamodel,xcdatamodeld}"
+s.resources = ['XMPPChat/**/*.{xcdatamodel,xcdatamodeld}']
 s.dependency "XMPPFramework", "~> 3.7.0"
 s.frameworks = 'CoreData'
 
