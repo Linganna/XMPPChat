@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.name         = "XMPPChat"
   s.version      = "0.0.1"
   s.summary      = "A short description of XMPPChat."
-  s.source       = path: 
+s.source       =  { :git => 'https://github.com/Linganna/XMPPChat.git', :tag => 'v0.0.1' }
   s.source_files  = "XMPPChat", "XMPPChat/**/*.{h,m}"
   s.dependency   = 'XMPPFramework', '~> 3.7.0'
   
