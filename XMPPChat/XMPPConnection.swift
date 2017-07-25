@@ -37,7 +37,8 @@ open class XMPPConnection:NSObject{
         self.xmppStream.myJID = self.userJID
         super.init()
         self.xmppStream.addDelegate(self, delegateQueue: DispatchQueue.main)
-        
+        DDLog.add(DDTTYLogger.sharedInstance)
+
     }
     
     public func connect() {
