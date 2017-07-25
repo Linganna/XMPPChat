@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16B2659" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Attachments" representedClassName="Attachments" syncable="YES">
+        <attribute name="datafilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Messages" inverseName="attachment" inverseEntity="Messages" syncable="YES"/>
+    </entity>
+    <entity name="Contacts" representedClassName="Contacts" syncable="YES">
+        <attribute name="bareJID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="streambare" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Messages" inverseName="contacts" inverseEntity="Messages" syncable="YES"/>
+    </entity>
+    <entity name="Messages" representedClassName="Messages" syncable="YES">
+        <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="composing" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="from" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="outGoing" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="timeStamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="to" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="attachment" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachments" inverseName="message" inverseEntity="Attachments" syncable="YES"/>
+        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Contacts" inverseName="messages" inverseEntity="Contacts" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Contacts" positionX="-54" positionY="-9" width="128" height="90"/>
+        <element name="Messages" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="Attachments" positionX="-54" positionY="-9" width="128" height="75"/>
+    </elements>
+</model>
