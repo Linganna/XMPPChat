@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16B2659" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Attachments" representedClassName="Attachments" syncable="YES">
+        <attribute name="attachemntId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="datafilePath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="message" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Messages" inverseName="attachment" inverseEntity="Messages" syncable="YES"/>
     </entity>
@@ -21,8 +22,8 @@
         <relationship name="contacts" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Contacts" inverseName="messages" inverseEntity="Contacts" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Attachments" positionX="-54" positionY="-9" width="128" height="90"/>
         <element name="Contacts" positionX="-54" positionY="-9" width="128" height="90"/>
         <element name="Messages" positionX="-63" positionY="-18" width="128" height="180"/>
-        <element name="Attachments" positionX="-54" positionY="-9" width="128" height="75"/>
     </elements>
 </model>
