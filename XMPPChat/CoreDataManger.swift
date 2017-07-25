@@ -35,14 +35,22 @@ class CoreDataManger: NSObject {
     // MARK: - Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "XMPPChat")
         
-        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: self.mainDatabaseSqliteURL())]
+        let momdName = "XMPPChat"
+        guard let modelURL = Bundle(for: type(of: self)).url(forResource: momdName, withExtension:"momd") else {
+            fatalError("Error loading model from bundle")
+        }
         
+        guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("Error initializing mom from: \(modelURL)")
+        }
+        
+        let container = NSPersistentContainer(name: momdName, managedObjectModel: mom)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-
+                
                 fatalError("Unresolved error \(error), \(error.userInfo)")
+                
             } else {
                 container.viewContext.automaticallyMergesChangesFromParent = true
             }

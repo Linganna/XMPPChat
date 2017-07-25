@@ -11,32 +11,34 @@ import XMPPFramework
 
 @objc(Messages)
 public class Messages: NSManagedObject {
-
+    
     public class func saveMessage(serverMsg:XMPPMessage, isOutGoing:Bool) {
         
         CoreDataManger.shared.persistentContainer.performBackgroundTask { (moc) in
             
-            if let messsage = NSEntityDescription.insertNewObject(forEntityName: "Messages", into: moc) as? Messages {
-                messsage.body = serverMsg.body()
-                if let timeStamp = serverMsg.delayedDeliveryDate() as NSDate? {
-                    messsage.timeStamp = timeStamp
-                }else{
-                    messsage.timeStamp = NSDate()
-                }
-                messsage.outGoing = isOutGoing
-                messsage.to = serverMsg.to().bare()
-                messsage.from = serverMsg.from().bare()
-                if isOutGoing == true {
-                    if let contact = Contacts.contact(bareJID: messsage.to) {
-                        contact.addToMessages(messsage)
+            moc.performAndWait {
+                if let messsage = NSEntityDescription.insertNewObject(forEntityName: "Messages", into: moc) as? Messages {
+                    messsage.body = serverMsg.body()
+                    if let timeStamp = serverMsg.delayedDeliveryDate() as NSDate? {
+                        messsage.timeStamp = timeStamp
+                    }else{
+                        messsage.timeStamp = NSDate()
                     }
-                }else{
-                    if let contact = Contacts.contact(bareJID: messsage.from) {
-                        contact.addToMessages(messsage)
+                    messsage.outGoing = isOutGoing
+                    if isOutGoing == true {
+                        messsage.to = serverMsg.to().bare()
+                        if let contact = Contacts.contact(bareJID: messsage.to, moc: moc) {
+                            contact.messages?.adding(messsage)
+                        }
+                    }else{
+                        messsage.from = serverMsg.from().bare()
+                        if let contact = Contacts.contact(bareJID: messsage.from, moc: moc) {
+                            contact.addToMessages(messsage)
+                        }
                     }
                 }
+                CoreDataManger.shared.saveMainContext(context:moc)
             }
-            CoreDataManger.shared.saveMainContext()
         }
     }
 }

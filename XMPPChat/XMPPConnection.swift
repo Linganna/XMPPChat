@@ -38,7 +38,7 @@ open class XMPPConnection:NSObject{
         super.init()
         self.xmppStream.addDelegate(self, delegateQueue: DispatchQueue.main)
         DDLog.add(DDTTYLogger.sharedInstance)
-
+        
     }
     
     public func connect() {
@@ -68,13 +68,10 @@ open class XMPPConnection:NSObject{
     
     
     public func sendMessage(message:String, to:String) {
-        let message = "Yo!"
         let senderJID = XMPPJID(string: to)
         let msg = XMPPMessage(type: "chat", to: senderJID)
         
         msg?.addBody(message)
-        self.xmppStream.addDelegate(self, delegateQueue: DispatchQueue.main)
-        
         self.xmppStream.send(msg)
         
         
@@ -115,6 +112,8 @@ extension XMPPConnection: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream!, didReceive message: XMPPMessage!) {
         print("Did receive message \(message)")
+        Messages.saveMessage(serverMsg: message, isOutGoing: false)
+        
     }
     
     
