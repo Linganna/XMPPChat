@@ -20,7 +20,7 @@ open class XMPPConnection:NSObject{
     var xmppDelegate:XMPPDelegate?
 
     
-    init(hostName: String, userJIDString: String, hostPort: UInt16 = 5222, password: String, delegate:XMPPDelegate) {
+    public init(hostName: String, userJIDString: String, hostPort: UInt16 = 5222, password: String, delegate:XMPPDelegate) {
         
         self.hostName = hostName
         self.hostPort = hostPort
@@ -39,7 +39,7 @@ open class XMPPConnection:NSObject{
 
     }
     
-    func connect() {
+    public func connect() {
         if !self.xmppStream.isDisconnected() {
             return
         }
