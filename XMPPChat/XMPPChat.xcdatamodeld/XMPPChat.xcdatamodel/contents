@@ -19,7 +19,7 @@
         <attribute name="timeStamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="to" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="attachment" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachments" inverseName="message" inverseEntity="Attachments" syncable="YES"/>
-        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Contacts" inverseName="messages" inverseEntity="Contacts" syncable="YES"/>
+        <relationship name="contacts" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Contacts" inverseName="messages" inverseEntity="Contacts" syncable="YES"/>
     </entity>
     <elements>
         <element name="Attachments" positionX="-54" positionY="-9" width="128" height="90"/>

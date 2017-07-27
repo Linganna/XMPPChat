@@ -16,29 +16,31 @@ public class Messages: NSManagedObject {
         
         CoreDataManger.shared.persistentContainer.performBackgroundTask { (moc) in
             
-            moc.performAndWait {
-                if let messsage = NSEntityDescription.insertNewObject(forEntityName: "Messages", into: moc) as? Messages {
-                    messsage.body = serverMsg.body()
-                    if let timeStamp = serverMsg.delayedDeliveryDate() as NSDate? {
-                        messsage.timeStamp = timeStamp
-                    }else{
-                        messsage.timeStamp = NSDate()
+            //  moc.performAndWait {
+            if let messsage = NSEntityDescription.insertNewObject(forEntityName: "Messages", into: moc) as? Messages {
+                messsage.body = serverMsg.body()
+                if let timeStamp = serverMsg.delayedDeliveryDate() as NSDate? {
+                    messsage.timeStamp = timeStamp
+                }else{
+                    messsage.timeStamp = NSDate()
+                }
+                messsage.outGoing = isOutGoing
+                if isOutGoing == true {
+                    messsage.to = serverMsg.to().bare()
+                    if let contact = Contacts.contact(bareJID: messsage.to, moc: moc) {
+                        contact.messages?.adding(messsage)
+                        messsage.contacts = contact
                     }
-                    messsage.outGoing = isOutGoing
-                    if isOutGoing == true {
-                        messsage.to = serverMsg.to().bare()
-                        if let contact = Contacts.contact(bareJID: messsage.to, moc: moc) {
-                            contact.messages?.adding(messsage)
-                        }
-                    }else{
-                        messsage.from = serverMsg.from().bare()
-                        if let contact = Contacts.contact(bareJID: messsage.from, moc: moc) {
-                            contact.addToMessages(messsage)
-                        }
+                }else{
+                    messsage.from = serverMsg.from().bare()
+                    if let contact = Contacts.contact(bareJID: messsage.from, moc: moc) {
+                        contact.addToMessages(messsage)
+                        messsage.contacts = contact
                     }
                 }
-                CoreDataManger.shared.saveMainContext(context:moc)
             }
+            CoreDataManger.shared.saveMainContext(context:moc)
+            //  }
         }
     }
 }

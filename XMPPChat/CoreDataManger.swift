@@ -11,7 +11,7 @@ import CoreData
 
 class CoreDataManger: NSObject {
     
-    static let shared = CoreDataManger()
+    public static let shared = CoreDataManger()
     
     var backgroundMoc: NSManagedObjectContext!
     var mainMoc: NSManagedObjectContext!
@@ -25,7 +25,7 @@ class CoreDataManger: NSObject {
         return Bundle.main.url(forResource: "XMPPChat", withExtension: "momd")!
     }
     
-    public func mainDatabaseSqliteURL() -> URL {
+    private func mainDatabaseSqliteURL() -> URL {
         
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
@@ -34,7 +34,7 @@ class CoreDataManger: NSObject {
     
     // MARK: - Core Data stack
     
-    lazy var persistentContainer: NSPersistentContainer = {
+    public lazy var persistentContainer: NSPersistentContainer = {
         
         let momdName = "XMPPChat"
         guard let modelURL = Bundle(for: type(of: self)).url(forResource: momdName, withExtension:"momd") else {
@@ -60,20 +60,20 @@ class CoreDataManger: NSObject {
     
     // MARK: - Core Data Saving support
     
-    func saveMainContext(){
+    public func saveMainContext(){
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
             } catch {
-
+                
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
     }
     
-    func saveMainContext(context:NSManagedObjectContext) {
+    public func saveMainContext(context:NSManagedObjectContext) {
         if context.hasChanges {
             do {
                 try context.save()
@@ -83,7 +83,7 @@ class CoreDataManger: NSObject {
             }
         }
     }
-
     
-
+    
+    
 }

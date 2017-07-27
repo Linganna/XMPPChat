@@ -18,6 +18,7 @@ open class XMPPConnection:NSObject{
     let password: String
     
     var xmppDelegate:XMPPDelegate?
+    let completionBlockQueue =  DispatchQueue(label: "xmppCompletionBlock")
     
     
     public init(hostName: String, userJIDString: String, hostPort: UInt16 = 5222, password: String, delegate:XMPPDelegate) {
@@ -36,7 +37,7 @@ open class XMPPConnection:NSObject{
         self.xmppDelegate = delegate
         self.xmppStream.myJID = self.userJID
         super.init()
-        self.xmppStream.addDelegate(self, delegateQueue: DispatchQueue.main)
+        self.xmppStream.addDelegate(self, delegateQueue: completionBlockQueue)
         DDLog.add(DDTTYLogger.sharedInstance)
         
     }
@@ -45,7 +46,6 @@ open class XMPPConnection:NSObject{
         if !self.xmppStream.isDisconnected() {
             return
         }
-        
         try! self.xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
     }
     
@@ -58,7 +58,6 @@ open class XMPPConnection:NSObject{
     public func goOnline() {
         let presence = XMPPPresence()
         self.xmppStream.send(presence)
-        //
     }
     
     public func goOffline() {
@@ -68,13 +67,12 @@ open class XMPPConnection:NSObject{
     
     
     public func sendMessage(message:String, to:String) {
+        
         let senderJID = XMPPJID(string: to)
         let msg = XMPPMessage(type: "chat", to: senderJID)
-        
         msg?.addBody(message)
+        Messages.saveMessage(serverMsg: msg!, isOutGoing: true)
         self.xmppStream.send(msg)
-        
-        
     }
     
 }
@@ -83,39 +81,33 @@ open class XMPPConnection:NSObject{
 extension XMPPConnection: XMPPStreamDelegate {
     
     public func xmppStreamDidConnect(_ stream: XMPPStream!) {
-        print("Stream: Connected")
+        NSLog("XMPP: Connected")
         try! stream.authenticate(withPassword: self.password)
     }
     public func xmppStreamDidDisconnect(_ sender: XMPPStream!, withError error: Error!) {
-        print("Stream: DisCOnnected")
-        
+        NSLog("XMPP: DisConnected error:\(error)")
     }
     
     public func xmppStreamDidAuthenticate(_ sender: XMPPStream!) {
-        print("Stream: Authenticated")
+        print("XMPP: Authenticated")
         goOnline()
         self.xmppDelegate?.xmppConnectionState(status: true)
         
     }
     
-    
     func xmppStream(sender: XMPPStream!, didReceiveIQ iq: XMPPIQ!) -> Bool {
-        print("Did receive IQ")
+        print("XMPP receive IQ - Query")
         return false
     }
     
     public func xmppStream(_ sender: XMPPStream!, didSend message: XMPPMessage!) {
-        print("Did send message \(message)")
-        Messages.saveMessage(serverMsg: message, isOutGoing: true)
+        print("XMPP send message \(message)")
     }
-    
     
     public func xmppStream(_ sender: XMPPStream!, didReceive message: XMPPMessage!) {
-        print("Did receive message \(message)")
+        print("XMPP receive message \(message)")
         Messages.saveMessage(serverMsg: message, isOutGoing: false)
-        
     }
-    
     
 }
 

@@ -15,15 +15,15 @@ public class Contacts: NSManagedObject {
     
     public class func contact(bareJID:String? , moc:NSManagedObjectContext?) -> Contacts? {
         var contact:Contacts?
-        moc?.performAndWait {
-            if let  existingContact = self.getContact(bareJID: bareJID, moc: moc) {
-                contact = existingContact
-            }else{
-                contact = (NSEntityDescription.insertNewObject(forEntityName: "Contacts", into: moc!) as! Contacts)
-                contact?.bareJID = bareJID
-                CoreDataManger.shared.saveMainContext(context: moc!)
-            }
+        // moc?.performAndWait {
+        if let  existingContact = self.getContact(bareJID: bareJID, moc: moc) {
+            contact = existingContact
+        }else{
+            contact = (NSEntityDescription.insertNewObject(forEntityName: "Contacts", into: moc!) as! Contacts)
+            contact?.bareJID = bareJID
+            CoreDataManger.shared.saveMainContext(context: moc!)
         }
+        //   }
         return contact;
     }
     
@@ -31,13 +31,13 @@ public class Contacts: NSManagedObject {
         
         var existingContact:Contacts?
         
-        moc?.performAndWait {
-            let fetchRequest:NSFetchRequest<Contacts> =  NSFetchRequest(entityName: "Contacts")
-            fetchRequest.predicate = NSPredicate.init(format: "bareJID == %@", bareJID!)
-            if let contacts = try? moc?.fetch(fetchRequest) , (contacts?.count)! > 0{
-                existingContact =  contacts?.last
-            }
+        // moc?.performAndWait {
+        let fetchRequest:NSFetchRequest<Contacts> =  NSFetchRequest(entityName: "Contacts")
+        fetchRequest.predicate = NSPredicate.init(format: "bareJID == %@", bareJID!)
+        if let contacts = try? moc?.fetch(fetchRequest) , (contacts?.count)! > 0{
+            existingContact =  contacts?.last
         }
+        //  }
         return existingContact;
     }
 }
