@@ -9,7 +9,7 @@
 import CoreData
 
 
-class CoreDataManger: NSObject {
+open class CoreDataManger: NSObject {
     
     public static let shared = CoreDataManger()
     
