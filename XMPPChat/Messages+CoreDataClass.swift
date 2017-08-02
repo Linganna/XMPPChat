@@ -13,10 +13,8 @@ import XMPPFramework
 public class Messages: NSManagedObject {
     
     public class func saveMessage(serverMsg:XMPPMessage, isOutGoing:Bool) {
-        
-        CoreDataManger.shared.persistentContainer.performBackgroundTask { (moc) in
-            
-            //  moc.performAndWait {
+         let moc =  CoreDataManger.shared.persistentContainer.newBackgroundContext()
+        moc.performAndWait {
             if let messsage = NSEntityDescription.insertNewObject(forEntityName: "Messages", into: moc) as? Messages {
                 messsage.body = serverMsg.body()
                 if let timeStamp = serverMsg.delayedDeliveryDate() as NSDate? {
@@ -31,6 +29,7 @@ public class Messages: NSManagedObject {
                         contact.messages?.adding(messsage)
                         messsage.contacts = contact
                     }
+                    messsage.status = MessageStatue.Sending.rawValue
                 }else{
                     messsage.from = serverMsg.from().bare()
                     if let contact = Contacts.contact(bareJID: messsage.from, moc: moc) {
@@ -40,7 +39,25 @@ public class Messages: NSManagedObject {
                 }
             }
             CoreDataManger.shared.saveMainContext(context:moc)
-            //  }
         }
+    }
+    
+    public func updateMessage(satue:MessageStatue, for messageId:String?) {
+        let moc =  CoreDataManger.shared.persistentContainer.newBackgroundContext()
+        moc.performAndWait {
+            let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
+            fetchRequest.predicate = NSPredicate.init(format: "id == %@", messageId!)
+            if let msgs = try? moc.fetch(fetchRequest) ,let message = msgs.last {
+               message.status = satue.rawValue
+                CoreDataManger.shared.saveMainContext(context:moc)
+            }
+        }
+    }
+    
+    public func fetchOutGoingPendingMessages(inMoc moc:NSManagedObjectContext) -> [Messages]{
+
+        let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
+        fetchRequest.predicate = NSPredicate.init(format: "status == %d", MessageStatue.Sending.rawValue)
+        return try! moc.fetch(fetchRequest)
     }
 }

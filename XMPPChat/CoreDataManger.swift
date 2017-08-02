@@ -16,6 +16,7 @@ open class CoreDataManger: NSObject {
     var backgroundMoc: NSManagedObjectContext!
     var mainMoc: NSManagedObjectContext!
     
+    
     private override init() {
         super.init()
         self.mainMoc = self.persistentContainer.viewContext
@@ -29,7 +30,13 @@ open class CoreDataManger: NSObject {
         
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-        return documentsDirectory.appendingPathComponent("XMPPChat.sqlite")
+        
+        let storeDoc = documentsDirectory.appendingPathComponent("XMPPChat")
+        
+        if !FileManager.default.fileExists(atPath: (storeDoc.path)) {
+           try? FileManager.default.createDirectory(at: storeDoc, withIntermediateDirectories: false, attributes: nil)
+        }
+        return storeDoc.appendingPathComponent("XMPPChat.sqlite")
     }
     
     // MARK: - Core Data stack
@@ -45,7 +52,9 @@ open class CoreDataManger: NSObject {
             fatalError("Error initializing mom from: \(modelURL)")
         }
         
-        let container = NSPersistentContainer(name: momdName, managedObjectModel: mom)
+        var container = NSPersistentContainer(name: momdName, managedObjectModel: mom)
+        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: self.mainDatabaseSqliteURL())]
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 
@@ -84,6 +93,29 @@ open class CoreDataManger: NSObject {
         }
     }
     
+    public func clearData() {
+        
+        self.mainMoc = nil
+        do {
+            let persistentStoreCoordinator = self.persistentContainer.persistentStoreCoordinator
+            let storeURL = persistentStoreCoordinator.persistentStores[0].url
+            try self.persistentContainer.persistentStoreCoordinator.destroyPersistentStore(at: storeURL!, ofType: NSSQLiteStoreType , options: nil)
+            
+        } catch {
+            // Error Handling
+        }
+
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let storeDoc = documentsDirectory.appendingPathComponent("XMPPChat")
+        if FileManager.default.fileExists(atPath: (storeDoc.path)) {
+            let filePaths = try? FileManager.default.contentsOfDirectory(atPath: storeDoc.path)
+            for path in filePaths! {
+                try? FileManager.default.removeItem(atPath: path)
+            }
+        }
+    }
     
+  
     
 }

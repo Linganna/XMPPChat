@@ -2,7 +2,7 @@
 //  Messages+CoreDataProperties.swift
 //  XMPPChat
 //
-//  Created by LInganna on 27/07/17.
+//  Created by LInganna on 02/08/17.
 //  Copyright © 2017 LInganna. All rights reserved.
 //
 
@@ -23,6 +23,8 @@ extension Messages {
     @NSManaged public var outGoing: Bool
     @NSManaged public var timeStamp: NSDate?
     @NSManaged public var to: String?
+    @NSManaged public var status: Int16
+    @NSManaged public var id: String?
     @NSManaged public var attachment: NSSet?
     @NSManaged public var contacts: Contacts?
 

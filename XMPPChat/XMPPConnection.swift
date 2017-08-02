@@ -9,7 +9,7 @@
 import Foundation
 import XMPPFramework
 
-open class XMPPConnection:NSObject{
+open class XMPPConnection:NSObject {
     var xmppStream: XMPPStream
     
     let hostName: String
@@ -19,7 +19,7 @@ open class XMPPConnection:NSObject{
     
     var xmppDelegate:XMPPDelegate?
     let completionBlockQueue =  DispatchQueue(label: "xmppCompletionBlock")
-    
+    var reConnect:XMPPReconnect?
     
     public init(hostName: String, userJIDString: String, hostPort: UInt16 = 5222, password: String, delegate:XMPPDelegate) {
         
@@ -33,13 +33,20 @@ open class XMPPConnection:NSObject{
         self.xmppStream.hostName = hostName
         self.xmppStream.hostPort = hostPort
         self.userJID = userJID!
-        self.xmppStream.startTLSPolicy = XMPPStreamStartTLSPolicy.allowed
         self.xmppDelegate = delegate
+
+        self.xmppStream.startTLSPolicy = XMPPStreamStartTLSPolicy.allowed
         self.xmppStream.myJID = self.userJID
         super.init()
         self.xmppStream.addDelegate(self, delegateQueue: completionBlockQueue)
         DDLog.add(DDTTYLogger.sharedInstance)
         
+    }
+    
+    fileprivate func initializeReconnectXMPP() {
+        self.reConnect = XMPPReconnect()
+        self.reConnect?.activate(self.xmppStream)
+        self.reConnect?.addDelegate(self, delegateQueue: completionBlockQueue)
     }
     
     public func connect() {
@@ -71,28 +78,44 @@ open class XMPPConnection:NSObject{
         let senderJID = XMPPJID(string: to)
         let msg = XMPPMessage(type: "chat", to: senderJID)
         msg?.addBody(message)
+        msg?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
         Messages.saveMessage(serverMsg: msg!, isOutGoing: true)
         self.xmppStream.send(msg)
+    }
+    
+    public func xmppConnectionStatus() -> XMPPStreamState {
+        return self.xmppStream.state
+    }
+    
+    public func isConnected() -> Bool {
+        return self.xmppStream.isConnected()
+    }
+    
+    public func isConnecting() -> Bool {
+        return self.xmppStream.isConnecting()
     }
     
 }
 
 
-extension XMPPConnection: XMPPStreamDelegate {
+extension XMPPConnection: XMPPStreamDelegate,XMPPReconnectDelegate {
     
     public func xmppStreamDidConnect(_ stream: XMPPStream!) {
         NSLog("XMPP: Connected")
+        self.xmppDelegate?.xmppConnectionState(xmppConnectionStatue: .connecting)
         try! stream.authenticate(withPassword: self.password)
     }
     public func xmppStreamDidDisconnect(_ sender: XMPPStream!, withError error: Error!) {
         NSLog("XMPP: DisConnected error:\(error)")
+        self.xmppDelegate?.xmppConnectionState(xmppConnectionStatue: .disConnected)
+
     }
     
     public func xmppStreamDidAuthenticate(_ sender: XMPPStream!) {
         print("XMPP: Authenticated")
         goOnline()
-        self.xmppDelegate?.xmppConnectionState(status: true)
-        
+        self.xmppDelegate?.xmppConnectionState(xmppConnectionStatue: .connected)
+        self.initializeReconnectXMPP()
     }
     
     func xmppStream(sender: XMPPStream!, didReceiveIQ iq: XMPPIQ!) -> Bool {
@@ -109,5 +132,13 @@ extension XMPPConnection: XMPPStreamDelegate {
         Messages.saveMessage(serverMsg: message, isOutGoing: false)
     }
     
+    
+    public func xmppReconnect(_ sender: XMPPReconnect!, shouldAttemptAutoReconnect connectionFlags: SCNetworkConnectionFlags) -> Bool {
+        return true
+    }
+    
+    public func xmppReconnect(_ sender: XMPPReconnect!, didDetectAccidentalDisconnect connectionFlags: SCNetworkConnectionFlags) {
+        NSLog("didDetectAccidentalDisconnect: \(connectionFlags)")
+    }
 }
 

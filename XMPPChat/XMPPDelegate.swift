@@ -11,7 +11,7 @@ import Foundation
 
 public protocol XMPPDelegate{
     
-    func xmppConnectionState(status:Bool)
+    func xmppConnectionState(xmppConnectionStatue:XMPPConnectionStatus)
     
-    
+    func xmppDidReceiveMessage(message:String, to:String)
 }

@@ -14,6 +14,7 @@
 		647441401F1DFE1D001E55DC /* XMPPConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6474413F1F1DFE1D001E55DC /* XMPPConnection.swift */; };
 		647441481F1E2755001E55DC /* XMPPDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647441471F1E2755001E55DC /* XMPPDelegate.swift */; };
 		6474414C1F1E2920001E55DC /* XMPPChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6474414A1F1E2920001E55DC /* XMPPChat.xcdatamodeld */; };
+		6474F3E41F3186DA0061A8BA /* XMPPConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6474F3E31F3186DA0061A8BA /* XMPPConstant.swift */; };
 		64F8275A1F260528004CC6D4 /* CoreDataManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F827591F260528004CC6D4 /* CoreDataManger.swift */; };
 		64F827691F261111004CC6D4 /* Messages+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F827671F261111004CC6D4 /* Messages+CoreDataClass.swift */; };
 		64F8276A1F261111004CC6D4 /* Messages+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F827681F261111004CC6D4 /* Messages+CoreDataProperties.swift */; };
@@ -47,6 +48,7 @@
 		6474413F1F1DFE1D001E55DC /* XMPPConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMPPConnection.swift; sourceTree = "<group>"; };
 		647441471F1E2755001E55DC /* XMPPDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMPPDelegate.swift; sourceTree = "<group>"; };
 		6474414B1F1E2920001E55DC /* XMPPChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = XMPPChat.xcdatamodel; sourceTree = "<group>"; };
+		6474F3E31F3186DA0061A8BA /* XMPPConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMPPConstant.swift; sourceTree = "<group>"; };
 		64F827591F260528004CC6D4 /* CoreDataManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManger.swift; sourceTree = "<group>"; };
 		64F827671F261111004CC6D4 /* Messages+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Messages+CoreDataClass.swift"; sourceTree = "<group>"; };
 		64F827681F261111004CC6D4 /* Messages+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Messages+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				6474413F1F1DFE1D001E55DC /* XMPPConnection.swift */,
 				647441471F1E2755001E55DC /* XMPPDelegate.swift */,
 				64F827591F260528004CC6D4 /* CoreDataManger.swift */,
+				6474F3E31F3186DA0061A8BA /* XMPPConstant.swift */,
 			);
 			path = XMPPChat;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				647441401F1DFE1D001E55DC /* XMPPConnection.swift in Sources */,
 				64F8276D1F261124004CC6D4 /* Contacts+CoreDataClass.swift in Sources */,
 				64F8276A1F261111004CC6D4 /* Messages+CoreDataProperties.swift in Sources */,
+				6474F3E41F3186DA0061A8BA /* XMPPConstant.swift in Sources */,
 				64F827711F261130004CC6D4 /* Attachments+CoreDataClass.swift in Sources */,
 				647441481F1E2755001E55DC /* XMPPDelegate.swift in Sources */,
 				64F827721F261130004CC6D4 /* Attachments+CoreDataProperties.swift in Sources */,

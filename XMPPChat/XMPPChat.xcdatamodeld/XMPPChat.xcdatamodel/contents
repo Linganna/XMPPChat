@@ -14,8 +14,10 @@
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="composing" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="from" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="outGoing" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="timeStamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="to" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="attachment" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachments" inverseName="message" inverseEntity="Attachments" syncable="YES"/>
@@ -24,6 +26,6 @@
     <elements>
         <element name="Attachments" positionX="-54" positionY="-9" width="128" height="90"/>
         <element name="Contacts" positionX="-54" positionY="-9" width="128" height="90"/>
-        <element name="Messages" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="Messages" positionX="-63" positionY="-18" width="128" height="210"/>
     </elements>
 </model>
