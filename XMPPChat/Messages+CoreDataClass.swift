@@ -16,6 +16,7 @@ public class Messages: NSManagedObject {
          let moc =  CoreDataManger.shared.persistentContainer.newBackgroundContext()
         moc.performAndWait {
             if let messsage = NSEntityDescription.insertNewObject(forEntityName: "Messages", into: moc) as? Messages {
+                messsage.id = serverMsg.elementID()
                 messsage.body = serverMsg.body()
                 if let timeStamp = serverMsg.delayedDeliveryDate() as NSDate? {
                     messsage.timeStamp = timeStamp
@@ -42,7 +43,7 @@ public class Messages: NSManagedObject {
         }
     }
     
-    public func updateMessage(satue:MessageStatue, for messageId:String?) {
+    public class func updateMessage(satue:MessageStatue, for messageId:String?) {
         let moc =  CoreDataManger.shared.persistentContainer.newBackgroundContext()
         moc.performAndWait {
             let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
@@ -54,7 +55,7 @@ public class Messages: NSManagedObject {
         }
     }
     
-    public func fetchOutGoingPendingMessages(inMoc moc:NSManagedObjectContext) -> [Messages]{
+    public class func fetchOutGoingPendingMessages(inMoc moc:NSManagedObjectContext) -> [Messages]{
 
         let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
         fetchRequest.predicate = NSPredicate.init(format: "status == %d", MessageStatue.Sending.rawValue)
