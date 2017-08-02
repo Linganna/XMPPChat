@@ -13,7 +13,7 @@ import XMPPFramework
 public class Messages: NSManagedObject {
     
     public class func saveMessage(serverMsg:XMPPMessage, isOutGoing:Bool) {
-         let moc =  CoreDataManger.shared.persistentContainer.newBackgroundContext()
+        let moc =  CoreDataManger.shared.persistentContainer.newBackgroundContext()
         moc.performAndWait {
             if let messsage = NSEntityDescription.insertNewObject(forEntityName: "Messages", into: moc) as? Messages {
                 messsage.id = serverMsg.elementID()
@@ -49,16 +49,16 @@ public class Messages: NSManagedObject {
             let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
             fetchRequest.predicate = NSPredicate.init(format: "id == %@", messageId!)
             if let msgs = try? moc.fetch(fetchRequest) ,let message = msgs.last {
-               message.status = satue.rawValue
+                message.status = satue.rawValue
                 CoreDataManger.shared.saveMainContext(context:moc)
             }
         }
     }
     
     public class func fetchOutGoingPendingMessages(inMoc moc:NSManagedObjectContext) -> [Messages]{
-
+        
         let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
-        fetchRequest.predicate = NSPredicate.init(format: "status == %d", MessageStatue.Sending.rawValue)
+        fetchRequest.predicate = NSPredicate.init(format: "status == %d AND outGoing == 1", MessageStatue.Sending.rawValue)
         return try! moc.fetch(fetchRequest)
     }
 }

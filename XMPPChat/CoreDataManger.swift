@@ -31,17 +31,17 @@ open class CoreDataManger: NSObject {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         
-        let storeDoc = documentsDirectory.appendingPathComponent("XMPPChat")
+        let storeDoc = documentsDirectory.appendingPathComponent("XMPPChatData")
         
         if !FileManager.default.fileExists(atPath: (storeDoc.path)) {
-           try? FileManager.default.createDirectory(at: storeDoc, withIntermediateDirectories: false, attributes: nil)
+            try? FileManager.default.createDirectory(at: storeDoc, withIntermediateDirectories: false, attributes: nil)
         }
         return storeDoc.appendingPathComponent("XMPPChat.sqlite")
     }
     
     // MARK: - Core Data stack
     
-    public lazy var persistentContainer: NSPersistentContainer = {
+    public lazy var persistentContainer: NSPersistentContainer! = {
         
         let momdName = "XMPPChat"
         guard let modelURL = Bundle(for: type(of: self)).url(forResource: momdName, withExtension:"momd") else {
@@ -69,18 +69,6 @@ open class CoreDataManger: NSObject {
     
     // MARK: - Core Data Saving support
     
-    public func saveMainContext(){
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
     
     public func saveMainContext(context:NSManagedObjectContext) {
         if context.hasChanges {
@@ -104,10 +92,11 @@ open class CoreDataManger: NSObject {
         } catch {
             // Error Handling
         }
-
+        
+        self.persistentContainer = nil
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-        let storeDoc = documentsDirectory.appendingPathComponent("XMPPChat")
+        let storeDoc = documentsDirectory.appendingPathComponent("XMPPChatData")
         if FileManager.default.fileExists(atPath: (storeDoc.path)) {
             let filePaths = try? FileManager.default.contentsOfDirectory(atPath: storeDoc.path)
             for path in filePaths! {
@@ -116,6 +105,6 @@ open class CoreDataManger: NSObject {
         }
     }
     
-  
+    
     
 }

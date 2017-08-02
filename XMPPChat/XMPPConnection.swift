@@ -34,7 +34,7 @@ open class XMPPConnection:NSObject {
         self.xmppStream.hostPort = hostPort
         self.userJID = userJID!
         self.xmppDelegate = delegate
-
+        
         self.xmppStream.startTLSPolicy = XMPPStreamStartTLSPolicy.allowed
         self.xmppStream.myJID = self.userJID
         super.init()
@@ -56,10 +56,11 @@ open class XMPPConnection:NSObject {
         }
         try! self.xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
     }
-   public func setManualReconnection(){
-         self.reConnect = XMPPReconnect()
-         self.reConnect?.manualStart()
-         self.reConnect?.addDelegate(self, delegateQueue: completionBlockQueue)
+    public func setManualReconnection(){
+        self.reConnect = XMPPReconnect()
+        self.reConnect?.activate(self.xmppStream)
+        self.reConnect?.manualStart()
+        self.reConnect?.addDelegate(self, delegateQueue: completionBlockQueue)
     }
     public func disconnect(){
         goOffline()
@@ -70,7 +71,7 @@ open class XMPPConnection:NSObject {
         self.disconnect()
         CoreDataManger.shared.clearData()
     }
-
+    
     
     public func goOnline() {
         let presence = XMPPPresence()
@@ -86,12 +87,15 @@ open class XMPPConnection:NSObject {
     
     public func sendMessage(message:String, to:String) {
         
-        let senderJID = XMPPJID(string: to)
-        let msg = XMPPMessage(type: "chat", to: senderJID)
-        msg?.addBody(message)
-        msg?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
-        Messages.saveMessage(serverMsg: msg!, isOutGoing: true)
-        self.xmppStream.send(msg)
+        DispatchQueue.global().async {
+            let senderJID = XMPPJID(string: to)
+            let msg = XMPPMessage(type: "chat", to: senderJID)
+            msg?.addBody(message)
+            msg?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
+            Messages.saveMessage(serverMsg: msg!, isOutGoing: true)
+            self.xmppStream.send(msg)
+        }
+        
     }
     
     func sendPendingMessage() {
@@ -132,21 +136,23 @@ extension XMPPConnection: XMPPStreamDelegate,XMPPReconnectDelegate {
         NSLog("XMPP: Connected")
         self.xmppDelegate?.xmppConnectionState(xmppConnectionStatue: .connecting)
         try! stream.authenticate(withPassword: self.password)
+        guard let _ = self.reConnect else {
+            self.initializeReconnectXMPP()
+            return
+        }
     }
     public func xmppStreamDidDisconnect(_ sender: XMPPStream!, withError error: Error!) {
         NSLog("XMPP: DisConnected error:\(error)")
+        goOffline()
         self.xmppDelegate?.xmppConnectionState(xmppConnectionStatue: .disConnected)
-
+        
     }
     
     public func xmppStreamDidAuthenticate(_ sender: XMPPStream!) {
         print("XMPP: Authenticated")
         goOnline()
         self.xmppDelegate?.xmppConnectionState(xmppConnectionStatue: .connected)
-        guard let _ = self.reConnect else {
-            self.initializeReconnectXMPP()
-            return
-        }
+        
         self.sendPendingMessage()
     }
     
@@ -163,6 +169,7 @@ extension XMPPConnection: XMPPStreamDelegate,XMPPReconnectDelegate {
     public func xmppStream(_ sender: XMPPStream!, didReceive message: XMPPMessage!) {
         print("XMPP receive message \(message)")
         Messages.saveMessage(serverMsg: message, isOutGoing: false)
+        self.xmppDelegate?.xmppDidReceiveMessage(message: message.body(), to: message.toStr())
     }
     
     
