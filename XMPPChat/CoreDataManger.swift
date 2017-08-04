@@ -13,29 +13,6 @@ open class CoreDataManger: NSObject {
     
     public static let shared = CoreDataManger()
     
-     var backgroundMoc: NSManagedObjectContext!
-    public var mainMoc: NSManagedObjectContext!
-    public var privateMoc:NSManagedObjectContext!
-
-    
-    private override init() {
-        super.init()
-        
-        privateMoc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        privateMoc!.persistentStoreCoordinator = persistantCoordinator
-        privateMoc!.retainsRegisteredObjects = true
-        privateMoc!.undoManager = nil
-        
-        mainMoc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        mainMoc.parent = privateMoc
-        mainMoc!.retainsRegisteredObjects = true
-        mainMoc!.undoManager = nil
-
-        backgroundMoc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        backgroundMoc.parent = mainMoc
-        backgroundMoc!.retainsRegisteredObjects = true
-        backgroundMoc!.undoManager = nil
-    }
     
     private func mainDatabaseMomdURL() -> URL {
         return Bundle.main.url(forResource: "XMPPChat", withExtension: "momd")!
@@ -102,6 +79,33 @@ open class CoreDataManger: NSObject {
             NSLog("unresolved error: \(error)")
         }
         return coordinator
+    }()
+    
+    public lazy var mainMoc:NSManagedObjectContext! = {
+        
+        let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        moc.parent = self.privateMoc
+        moc.retainsRegisteredObjects = true
+        moc.undoManager = nil
+        return moc
+    }()
+    
+    public lazy var privateMoc:NSManagedObjectContext! = {
+        
+        let moc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        moc.persistentStoreCoordinator = self.persistantCoordinator
+        moc.retainsRegisteredObjects = true
+        moc.undoManager = nil
+        return moc
+    }()
+    
+    public lazy var backgroundMoc:NSManagedObjectContext! = {
+        
+        let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        moc.parent = self.mainMoc
+        moc.retainsRegisteredObjects = true
+        moc.undoManager = nil
+        return moc
     }()
     
     public func saveMainContext(context:NSManagedObjectContext) {
