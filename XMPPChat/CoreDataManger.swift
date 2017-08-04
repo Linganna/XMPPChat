@@ -13,9 +13,9 @@ open class CoreDataManger: NSObject {
     
     public static let shared = CoreDataManger()
     
-    var backgroundMoc: NSManagedObjectContext!
-    var mainMoc: NSManagedObjectContext!
-    var privateMoc:NSManagedObjectContext!
+     var backgroundMoc: NSManagedObjectContext!
+    public var mainMoc: NSManagedObjectContext!
+    public var privateMoc:NSManagedObjectContext!
 
     
     private override init() {
