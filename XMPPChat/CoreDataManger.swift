@@ -15,11 +15,26 @@ open class CoreDataManger: NSObject {
     
     var backgroundMoc: NSManagedObjectContext!
     var mainMoc: NSManagedObjectContext!
-    
+    var privateMoc:NSManagedObjectContext!
+
     
     private override init() {
         super.init()
-        self.mainMoc = self.persistentContainer.viewContext
+        
+        privateMoc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        privateMoc!.persistentStoreCoordinator = persistantCoordinator
+        privateMoc!.retainsRegisteredObjects = true
+        privateMoc!.undoManager = nil
+        
+        mainMoc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        mainMoc.parent = privateMoc
+        mainMoc!.retainsRegisteredObjects = true
+        mainMoc!.undoManager = nil
+
+        backgroundMoc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        backgroundMoc.parent = mainMoc
+        backgroundMoc!.retainsRegisteredObjects = true
+        backgroundMoc!.undoManager = nil
     }
     
     private func mainDatabaseMomdURL() -> URL {
@@ -41,7 +56,7 @@ open class CoreDataManger: NSObject {
     
     // MARK: - Core Data stack
     
-    public lazy var persistentContainer: NSPersistentContainer! = {
+   /* public lazy var persistentContainer: NSPersistentContainer! = {
         
         let momdName = "XMPPChat"
         guard let modelURL = Bundle(for: type(of: self)).url(forResource: momdName, withExtension:"momd") else {
@@ -66,14 +81,36 @@ open class CoreDataManger: NSObject {
         })
         return container
     }()
-    
+    */
     // MARK: - Core Data Saving support
+    public lazy var persistantCoordinator:NSPersistentStoreCoordinator! = {
     
+        let momdName = "XMPPChat"
+        guard let modelURL = Bundle(for: type(of: self)).url(forResource: momdName, withExtension:"momd") else {
+            fatalError("Error loading model from bundle")
+        }
+        
+        let model = NSManagedObjectModel(contentsOf: modelURL)
+        
+        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
+        let options:[AnyHashable: Any] = [NSMigratePersistentStoresAutomaticallyOption:true, NSInferMappingModelAutomaticallyOption:true]
+        do {
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: self.mainDatabaseSqliteURL(), options: options)
+           
+        }
+        catch  let error {
+            NSLog("unresolved error: \(error)")
+        }
+        return coordinator
+    }()
     
     public func saveMainContext(context:NSManagedObjectContext) {
         if context.hasChanges {
             do {
                 try context.save()
+                if let parentMoc = context.parent {
+                    saveMainContext(context: parentMoc)
+                }
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
@@ -83,17 +120,19 @@ open class CoreDataManger: NSObject {
     
     public func clearData() {
         
-        self.mainMoc = nil
         do {
-            let persistentStoreCoordinator = self.persistentContainer.persistentStoreCoordinator
-            let storeURL = persistentStoreCoordinator.persistentStores[0].url
-            try self.persistentContainer.persistentStoreCoordinator.destroyPersistentStore(at: storeURL!, ofType: NSSQLiteStoreType , options: nil)
+            let storeURL = persistantCoordinator.persistentStores[0].url
+            try self.persistantCoordinator.destroyPersistentStore(at: storeURL!, ofType: NSSQLiteStoreType , options: nil)
             
         } catch {
             // Error Handling
         }
         
-        self.persistentContainer = nil
+        self.persistantCoordinator = nil
+        self.privateMoc = nil
+        self.backgroundMoc = nil
+        self.mainMoc = nil
+        
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         let storeDoc = documentsDirectory.appendingPathComponent("XMPPChatData")
@@ -104,7 +143,5 @@ open class CoreDataManger: NSObject {
             }
         }
     }
-    
-    
     
 }

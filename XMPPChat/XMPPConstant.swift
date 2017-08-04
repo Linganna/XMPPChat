@@ -16,7 +16,7 @@ public enum XMPPConnectionStatus {
     case disConnected
 }
 
-public enum MessageStatue: Int16{
+public enum MessageStatus: Int16{
     case Sending
     case Sent
     case Delivered

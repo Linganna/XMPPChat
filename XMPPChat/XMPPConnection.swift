@@ -99,16 +99,17 @@ open class XMPPConnection:NSObject {
     }
     
     func sendPendingMessage() {
-        let moc = CoreDataManger.shared.persistentContainer.newBackgroundContext()
-        moc.performAndWait {
-            let msgs = Messages.fetchOutGoingPendingMessages(inMoc: moc)
-            if msgs.count > 0 {
-                for msg in msgs {
-                    let senderJID = XMPPJID(string: msg.to)
-                    let xmppMsg = XMPPMessage(type: "chat", to: senderJID)
-                    xmppMsg?.addBody(msg.body)
-                    xmppMsg?.addAttribute(withName: "id", stringValue: msg.id!)
-                    self.xmppStream.send(xmppMsg)
+        if let moc =  CoreDataManger.shared.backgroundMoc{
+            moc.performAndWait {
+                let msgs = Messages.fetchOutGoingPendingMessages(inMoc: moc)
+                if msgs.count > 0 {
+                    for msg in msgs {
+                        let senderJID = XMPPJID(string: msg.to)
+                        let xmppMsg = XMPPMessage(type: "chat", to: senderJID)
+                        xmppMsg?.addBody(msg.body)
+                        xmppMsg?.addAttribute(withName: "id", stringValue: msg.id!)
+                        self.xmppStream.send(xmppMsg)
+                    }
                 }
             }
         }
