@@ -98,23 +98,43 @@ open class XMPPConnection:NSObject {
         
     }
     
-//    public func forwardMessage(message:String, to:String) {
-//        
-//        
-//        DispatchQueue.global().async {
-//            let senderJID = XMPPJID(string: to)
-//            let msg = XMPPMessage(type: "chat", to: senderJID)
-//            msg?.addBody(message)
-//            msg?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
-//            
-//            let forwarded = XMLElement
-//          //  NSXMLElement *enable = [NSXMLElement elementWithName:@"disable" xmlns:XMLNS_XMPP_MESSAGE_CARBONS];
-//
-//            Messages.saveMessage(serverMsg: msg!, isOutGoing: true)
-//            self.xmppStream.send(msg)
-//        }
-//
-//    }
+    public func forwardMessage(forwardingMessage:String, to:String, originalMsgTofeild:String?, originalMssgFromFeild:String?) {
+        
+        DispatchQueue.global().async {
+            let senderJID = XMPPJID(string: to)
+            let msg = XMPPMessage(type: "chat", to: senderJID)
+            msg?.addBody(forwardingMessage)
+            msg?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
+            
+            
+            let forwarded = XMLElement(name: "forwarded")
+            forwarded.setXmlns("urn:xmpp:forward:0")
+            
+            let delay = XMLElement(name:"delay" , xmlns: "urn:xmpp:delay")
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            delay?.addAttribute(withName: "stamp", stringValue:formatter.string(from: NSDate() as Date) )
+            
+            forwarded.addChild(delay!)
+            
+            let senderJID2 = XMPPJID(string: originalMsgTofeild)
+            let msg2 = XMPPMessage(type: "chat", to: senderJID2)
+            msg2?.addAttribute(withName: "from", stringValue: originalMssgFromFeild!)
+            msg2?.addBody(forwardingMessage)
+            msg2?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
+             msg2?.setXmlns((msg?.xmlns())!)
+
+            
+            forwarded.addChild(msg2!)
+            
+            msg?.addChild(forwarded)
+
+            Messages.saveMessage(serverMsg: msg!, isOutGoing: true)
+            self.xmppStream.send(msg)
+        }
+
+    }
     
     func sendPendingMessage() {
         if let moc =  CoreDataManger.shared.backgroundMoc{
