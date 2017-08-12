@@ -7,7 +7,9 @@
     </entity>
     <entity name="Contacts" representedClassName="Contacts" syncable="YES">
         <attribute name="bareJID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastmessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="streambare" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updateTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Messages" inverseName="contacts" inverseEntity="Messages" syncable="YES"/>
     </entity>
     <entity name="Messages" representedClassName="Messages" syncable="YES">
@@ -25,7 +27,7 @@
     </entity>
     <elements>
         <element name="Attachments" positionX="-54" positionY="-9" width="128" height="90"/>
-        <element name="Contacts" positionX="-54" positionY="-9" width="128" height="90"/>
+        <element name="Contacts" positionX="-54" positionY="-9" width="128" height="120"/>
         <element name="Messages" positionX="-63" positionY="-18" width="128" height="210"/>
     </elements>
 </model>

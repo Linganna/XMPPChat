@@ -98,6 +98,24 @@ open class XMPPConnection:NSObject {
         
     }
     
+//    public func forwardMessage(message:String, to:String) {
+//        
+//        
+//        DispatchQueue.global().async {
+//            let senderJID = XMPPJID(string: to)
+//            let msg = XMPPMessage(type: "chat", to: senderJID)
+//            msg?.addBody(message)
+//            msg?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
+//            
+//            let forwarded = XMLElement
+//          //  NSXMLElement *enable = [NSXMLElement elementWithName:@"disable" xmlns:XMLNS_XMPP_MESSAGE_CARBONS];
+//
+//            Messages.saveMessage(serverMsg: msg!, isOutGoing: true)
+//            self.xmppStream.send(msg)
+//        }
+//
+//    }
+    
     func sendPendingMessage() {
         if let moc =  CoreDataManger.shared.backgroundMoc{
             moc.performAndWait {
