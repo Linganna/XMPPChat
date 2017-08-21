@@ -123,7 +123,6 @@ open class XMPPConnection:NSObject {
             msg2?.addAttribute(withName: "from", stringValue: originalMssgFromFeild!)
             msg2?.addBody(forwardingMessage)
             msg2?.addAttribute(withName: "id", stringValue: self.xmppStream.generateUUID())
-             msg2?.setXmlns((msg?.xmlns())!)
 
             
             forwarded.addChild(msg2!)
