@@ -40,4 +40,15 @@ public class Contacts: NSManagedObject {
         //  }
         return existingContact;
     }
+    
+    public class func lastMessage(bareJID:String?, moc:NSManagedObjectContext?) -> String? {
+        
+        let fetchRequest:NSFetchRequest<Contacts> =  NSFetchRequest(entityName: "Contacts")
+        fetchRequest.predicate = NSPredicate.init(format: "bareJID == %@", bareJID!)
+        if let contacts = try? moc?.fetch(fetchRequest) , (contacts?.count)! > 0{
+            existingContact =  contacts?.last
+        }
+        return existingContact?.lastmessage;
+    }
+
 }
