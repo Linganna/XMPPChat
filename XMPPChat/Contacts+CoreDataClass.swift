@@ -42,7 +42,7 @@ public class Contacts: NSManagedObject {
     }
     
     public class func lastMessage(bareJID:String?, moc:NSManagedObjectContext?) -> String? {
-        
+        var existingContact:Contacts?
         let fetchRequest:NSFetchRequest<Contacts> =  NSFetchRequest(entityName: "Contacts")
         fetchRequest.predicate = NSPredicate.init(format: "bareJID == %@", bareJID!)
         if let contacts = try? moc?.fetch(fetchRequest) , (contacts?.count)! > 0{
