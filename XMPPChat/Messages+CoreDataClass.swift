@@ -69,6 +69,9 @@ public class Messages: NSManagedObject {
         }
     }
     
+    
+
+    
     public class func deleteMessage(messageId:String?) {
         let moc =   CoreDataManger.shared.backgroundMoc
         moc?.performAndWait {
@@ -76,6 +79,7 @@ public class Messages: NSManagedObject {
             fetchRequest.predicate = NSPredicate.init(format: "id == %@", messageId!)
             if let msgs = try? moc?.fetch(fetchRequest) ,let message = msgs?.last {
                 moc?.delete(message)
+                self.updateLastMessageAndTimeForId(bareJID: message.contacts?.bareJID, moc: moc)
                 CoreDataManger.shared.saveMainContext(context:moc!)
             }
         }
@@ -86,5 +90,26 @@ public class Messages: NSManagedObject {
         let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
         fetchRequest.predicate = NSPredicate.init(format: "status == %d AND outGoing == 1", MessageStatus.Sending.rawValue)
         return try! moc.fetch(fetchRequest)
+    }
+    
+    public class func updateLastMessageAndTimeForId(bareJID:String?, moc:NSManagedObjectContext?) {
+        if let  lastContact = Contacts.getContact(bareJID: bareJID, moc: moc) {
+            let fetchRequest:NSFetchRequest<Messages> =  NSFetchRequest(entityName: "Messages")
+            fetchRequest.predicate = NSPredicate.init(format: "contacts.bareJID == %@", lastContact.bareJID!)
+            
+            //set sort descriptor
+            let sortDescriptor = NSSortDescriptor(key: "timeStamp", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            
+            if let messages = try?moc?.fetch(fetchRequest), let message = messages?.last {
+                if let contactUpdateTime = message.timeStamp, let contactLastMsg = message.body {
+                    lastContact.updateTime =  contactUpdateTime
+                    lastContact.lastmessage = contactLastMsg
+                }else{
+                    lastContact.updateTime =  NSDate()
+                    lastContact.lastmessage = ""
+                }
+            }
+        }
     }
 }
