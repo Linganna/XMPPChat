@@ -70,7 +70,7 @@ public class Messages: NSManagedObject {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             let documentsDirectory = paths[0]
             let fileName = "attachement_\(String(Date().timeIntervalSince1970 * 1000.0)).png"
-            let storeDoc = documentsDirectory.appendingPathComponent("attachement_\(fileName).png")
+            let storeDoc = documentsDirectory.appendingPathComponent(fileName)
             if !FileManager.default.fileExists(atPath: (storeDoc.path)) {
                  FileManager.default.createFile(atPath: storeDoc.path, contents: mediaData, attributes: nil)
             }
