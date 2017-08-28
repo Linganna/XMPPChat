@@ -113,7 +113,9 @@ open class XMPPConnection:NSObject {
         message.addChild(body)
         message.addChild(imageAttachement)
         
-        Messages.saveMessage(serverMsg: message as! XMPPMessage, isOutGoing: true)
+        let msg = XMPPMessage(from: message)
+        
+        Messages.saveMessage(serverMsg:msg!, isOutGoing: true)
         
         self.xmppStream.send(message)
     }
