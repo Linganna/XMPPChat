@@ -97,6 +97,23 @@ open class XMPPConnection:NSObject {
         }
         
     }
+
+    public func sendAttachment(image:UIImage, to jId:String ) {
+        let data = UIImageJPEGRepresentation(image, 0.1)
+        let imageStr = data?.base64EncodedString()
+        
+        let body = DDXMLElement.element(withName: "body") as! DDXMLElement
+        let messageID = self.xmppStream.generateUUID()
+        let imageAttachement = DDXMLElement.element(withName: "attachment", stringValue: imageStr!) as! DDXMLElement
+        
+        let message = DDXMLElement.element(withName: "message") as! DDXMLElement
+        message.addAttribute(withName: "type", stringValue: "chat")
+        message.addAttribute(withName: "id", stringValue: messageID!)
+        message.addAttribute(withName: "to", stringValue: jId)
+        message.addChild(body)
+        message.addChild(imageAttachement)
+        self.xmppStream.send(message)
+    }
     
     public func forwardMessage(forwardingMessage:String, to:String, originalMsgTofeild:String?, originalMssgFromFeild:String?) {
         

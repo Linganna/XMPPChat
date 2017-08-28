@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2B86B63B4EC1E5DAB0EC5BC3 /* Pods_XMPPChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F628CEB96B65F141C939F8EA /* Pods_XMPPChat.framework */; };
-		647440F01F1DF946001E55DC /* XMPPChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 647440E61F1DF946001E55DC /* XMPPChat.framework */; };
-		647440F51F1DF946001E55DC /* XMPPChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647440F41F1DF946001E55DC /* XMPPChatTests.swift */; };
 		647440F71F1DF946001E55DC /* XMPPChat.h in Headers */ = {isa = PBXBuildFile; fileRef = 647440E91F1DF946001E55DC /* XMPPChat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		647441401F1DFE1D001E55DC /* XMPPConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6474413F1F1DFE1D001E55DC /* XMPPConnection.swift */; };
 		647441481F1E2755001E55DC /* XMPPDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647441471F1E2755001E55DC /* XMPPDelegate.swift */; };
@@ -22,18 +20,7 @@
 		64F8276E1F261124004CC6D4 /* Contacts+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F8276C1F261124004CC6D4 /* Contacts+CoreDataProperties.swift */; };
 		64F827711F261130004CC6D4 /* Attachments+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F8276F1F261130004CC6D4 /* Attachments+CoreDataClass.swift */; };
 		64F827721F261130004CC6D4 /* Attachments+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F827701F261130004CC6D4 /* Attachments+CoreDataProperties.swift */; };
-		D13350ECE7A9AE7726DC365F /* Pods_XMPPChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F1F8631771DCAFFE003795 /* Pods_XMPPChatTests.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		647440F11F1DF946001E55DC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 647440DD1F1DF946001E55DC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 647440E51F1DF946001E55DC;
-			remoteInfo = XMPPChat;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2105437EECA387273575E9CD /* Pods-XMPPChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XMPPChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XMPPChat/Pods-XMPPChat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -42,8 +29,6 @@
 		647440E61F1DF946001E55DC /* XMPPChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XMPPChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		647440E91F1DF946001E55DC /* XMPPChat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMPPChat.h; sourceTree = "<group>"; };
 		647440EA1F1DF946001E55DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		647440EF1F1DF946001E55DC /* XMPPChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XMPPChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		647440F41F1DF946001E55DC /* XMPPChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMPPChatTests.swift; sourceTree = "<group>"; };
 		647440F61F1DF946001E55DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6474413F1F1DFE1D001E55DC /* XMPPConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMPPConnection.swift; sourceTree = "<group>"; };
 		647441471F1E2755001E55DC /* XMPPDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMPPDelegate.swift; sourceTree = "<group>"; };
@@ -67,15 +52,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B86B63B4EC1E5DAB0EC5BC3 /* Pods_XMPPChat.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		647440EC1F1DF946001E55DC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				647440F01F1DF946001E55DC /* XMPPChat.framework in Frameworks */,
-				D13350ECE7A9AE7726DC365F /* Pods_XMPPChatTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,7 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				647440E61F1DF946001E55DC /* XMPPChat.framework */,
-				647440EF1F1DF946001E55DC /* XMPPChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,7 +105,6 @@
 		647440F31F1DF946001E55DC /* XMPPChatTests */ = {
 			isa = PBXGroup;
 			children = (
-				647440F41F1DF946001E55DC /* XMPPChatTests.swift */,
 				647440F61F1DF946001E55DC /* Info.plist */,
 			);
 			path = XMPPChatTests;
@@ -193,27 +167,6 @@
 			productReference = 647440E61F1DF946001E55DC /* XMPPChat.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		647440EE1F1DF946001E55DC /* XMPPChatTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 647440FD1F1DF946001E55DC /* Build configuration list for PBXNativeTarget "XMPPChatTests" */;
-			buildPhases = (
-				392F1D859154AF30745FFF63 /* [CP] Check Pods Manifest.lock */,
-				647440EB1F1DF946001E55DC /* Sources */,
-				647440EC1F1DF946001E55DC /* Frameworks */,
-				647440ED1F1DF946001E55DC /* Resources */,
-				5B6D051EE1CEFB189ABEEABB /* [CP] Embed Pods Frameworks */,
-				64CAB9E177E14D33C53225CF /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				647440F21F1DF946001E55DC /* PBXTargetDependency */,
-			);
-			name = XMPPChatTests;
-			productName = XMPPChatTests;
-			productReference = 647440EF1F1DF946001E55DC /* XMPPChatTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -227,10 +180,6 @@
 					647440E51F1DF946001E55DC = {
 						CreatedOnToolsVersion = 8.3.2;
 						LastSwiftMigration = 0830;
-						ProvisioningStyle = Automatic;
-					};
-					647440EE1F1DF946001E55DC = {
-						CreatedOnToolsVersion = 8.3.2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -248,20 +197,12 @@
 			projectRoot = "";
 			targets = (
 				647440E51F1DF946001E55DC /* XMPPChat */,
-				647440EE1F1DF946001E55DC /* XMPPChatTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		647440E41F1DF946001E55DC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		647440ED1F1DF946001E55DC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -301,51 +242,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		392F1D859154AF30745FFF63 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		5B6D051EE1CEFB189ABEEABB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XMPPChatTests/Pods-XMPPChatTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		64CAB9E177E14D33C53225CF /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XMPPChatTests/Pods-XMPPChatTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -367,23 +263,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		647440EB1F1DF946001E55DC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				647440F51F1DF946001E55DC /* XMPPChatTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		647440F21F1DF946001E55DC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 647440E51F1DF946001E55DC /* XMPPChat */;
-			targetProxy = 647440F11F1DF946001E55DC /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		647440F81F1DF946001E55DC /* Debug */ = {
@@ -408,7 +288,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -431,7 +311,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -463,7 +343,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -480,7 +360,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -535,32 +415,6 @@
 			};
 			name = Release;
 		};
-		647440FE1F1DF946001E55DC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 69CEA69D6CD6869345A73EC4 /* Pods-XMPPChatTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = XMPPChatTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.XMPPChatTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		647440FF1F1DF946001E55DC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 404221329DCD8EAE4E6B6678 /* Pods-XMPPChatTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = XMPPChatTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.XMPPChatTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -578,15 +432,6 @@
 			buildConfigurations = (
 				647440FB1F1DF946001E55DC /* Debug */,
 				647440FC1F1DF946001E55DC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		647440FD1F1DF946001E55DC /* Build configuration list for PBXNativeTarget "XMPPChatTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				647440FE1F1DF946001E55DC /* Debug */,
-				647440FF1F1DF946001E55DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
