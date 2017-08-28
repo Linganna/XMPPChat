@@ -41,6 +41,13 @@ public class Messages: NSManagedObject {
                         messsage.contacts = contactInfo
                     }
                 }
+                
+                if serverMsg.elements(forName: "attachment").count > 0{
+                   let attachment =  saveAttachment(base64String: (serverMsg.elements(forName: "attachment")[0]).stringValue!, in: moc!)
+                    attachment?.message = messsage
+                    messsage.addToAttachment(attachment!)
+                }
+                
                 if let contactUpdateTime = contactInfo?.updateTime {
                     if contactUpdateTime.compare(messsage.timeStamp! as Date) == .orderedAscending {
                         
@@ -55,6 +62,23 @@ public class Messages: NSManagedObject {
             }
             CoreDataManger.shared.saveMainContext(context:moc!)
         }
+    }
+    
+    class func saveAttachment(base64String:String, in moc:NSManagedObjectContext) -> Attachments? {
+        if let attachment = NSEntityDescription.insertNewObject(forEntityName: "Attachments", into: moc) as? Attachments{
+            let mediaData = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters)
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let documentsDirectory = paths[0]
+            let fileName = "attachement_\(String(Date().timeIntervalSince1970 * 1000.0)).png"
+            let storeDoc = documentsDirectory.appendingPathComponent("attachement_\(fileName).png")
+            if !FileManager.default.fileExists(atPath: (storeDoc.path)) {
+                 FileManager.default.createFile(atPath: storeDoc.path, contents: mediaData, attributes: nil)
+            }
+            attachment.datafilePath = fileName
+            return attachment
+        }
+        return nil
+   
     }
     
     public class func updateMessage(satue:MessageStatus, for messageId:String?) {
