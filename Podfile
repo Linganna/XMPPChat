@@ -11,9 +11,9 @@ target 'XMPPChat' do
 
   # Pods for XMPPChat
 
-  target 'XMPPChatTests' do
-    inherit! :search_paths
+#target 'XMPPChatTests' do
+# inherit! :search_paths
     # Pods for testing
-  end
+    # end
 
 end
