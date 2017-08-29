@@ -139,13 +139,13 @@ open class CoreDataManger: NSObject {
         
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
-        let storeDoc = documentsDirectory.appendingPathComponent("XMPPChatData")
-        if FileManager.default.fileExists(atPath: (storeDoc.path)) {
-            let filePaths = try? FileManager.default.contentsOfDirectory(atPath: storeDoc.path)
+        //let storeDoc = documentsDirectory.appendingPathComponent("XMPPChatData")
+        //if FileManager.default.fileExists(atPath: (storeDoc.path)) {
+            let filePaths = try? FileManager.default.contentsOfDirectory(atPath: documentsDirectory.path)
             for path in filePaths! {
                 try? FileManager.default.removeItem(atPath: path)
             }
-        }
+        //}
     }
     
 }
